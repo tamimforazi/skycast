@@ -81,8 +81,6 @@ class weatherApp extends StatelessWidget {
                 PerHourForecast(),
                 PerHourForecast(),
                 PerHourForecast(),
-                PerHourForecast(),
-                PerHourForecast(),
               ],
             ),
           ),
