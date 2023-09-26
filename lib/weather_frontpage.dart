@@ -1,9 +1,34 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:weather_app/additional_info.dart';
 import 'package:weather_app/perhour_forecast.dart';
+import 'package:http/http.dart' as http;
 
-class weatherApp extends StatelessWidget {
+class weatherApp extends StatefulWidget {
   const weatherApp({super.key});
+
+  @override
+  State<weatherApp> createState() => _weatherAppState();
+}
+
+class _weatherAppState extends State<weatherApp> {
+  @override
+  void initState() {
+    super.initState();
+    getWeather();
+  }
+
+  Future getWeather() async {
+    try {
+      String cityName = 'London';
+      final res = await http.get(
+        Uri.parse(
+            "http:/api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=2e379a76e9e91f115eb5d026373f58cb"),
+      );
+    } catch (e) {
+      throw e.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +99,36 @@ class weatherApp extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                PerHourForecast(),
-                PerHourForecast(),
-                PerHourForecast(),
-                PerHourForecast(),
-                PerHourForecast(),
-                PerHourForecast(),
-                PerHourForecast(),
+                PerHourForecast(
+                  time: "00.00",
+                  icon: Icons.cloud,
+                  temperature: "25°C",
+                ),
+                PerHourForecast(
+                  time: "04.00",
+                  icon: Icons.sunny,
+                  temperature: "30°C",
+                ),
+                PerHourForecast(
+                  time: "08.00",
+                  icon: Icons.sunny,
+                  temperature: "28°C",
+                ),
+                PerHourForecast(
+                  time: "12.00",
+                  icon: Icons.cloud,
+                  temperature: "25°C",
+                ),
+                PerHourForecast(
+                  time: "16.00",
+                  icon: Icons.thunderstorm,
+                  temperature: "21°C",
+                ),
+                PerHourForecast(
+                  time: "20.00",
+                  icon: Icons.cloud,
+                  temperature: "25°C",
+                ),
               ],
             ),
           ),
