@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
-import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/additional_info.dart';
 import 'package:weather_app/perhour_forecast.dart';
 import 'package:http/http.dart' as http;
@@ -15,20 +16,14 @@ class weatherApp extends StatefulWidget {
 }
 
 class weatherAppState extends State<weatherApp> {
-  get DateFormat => null;
-
-  @override
-  void initState() {
-    super.initState();
-    getWeather();
-  }
+  late Future<Map<String, dynamic>> weather;
 
   Future<Map<String, dynamic>> getWeather() async {
     try {
-      String cityName = 'London';
+      // String cityName = 'London';
       final res = await http.get(
         Uri.parse(
-            "http:/api.openweathermap.org/data/2.5/weather?q=$cityName&APPID=$apiKey"),
+            "http://api.openweathermap.org/data/2.5/forecast?q=London&APPID=2e379a76e9e91f115eb5d026373f58cb"),
       );
 
       final data = jsonDecode(res.body);
@@ -41,6 +36,12 @@ class weatherAppState extends State<weatherApp> {
     } catch (e) {
       throw e.toString();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    weather = getWeather();
   }
 
   @override
@@ -57,7 +58,11 @@ class weatherAppState extends State<weatherApp> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                weather = getWeather();
+              });
+            },
             icon: const Icon(Icons.refresh),
           ),
         ],
@@ -132,7 +137,6 @@ class weatherAppState extends State<weatherApp> {
                       color: Color.fromARGB(255, 87, 184, 111),
                       fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 16),
                 const SizedBox(height: 8),
                 SizedBox(
                   height: 120,
